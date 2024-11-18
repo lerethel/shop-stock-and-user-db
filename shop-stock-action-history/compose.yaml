@@ -1,0 +1,38 @@
+services:
+  postgresdb:
+    image: postgres:17.0-alpine
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_DB=$DATABASE_NAME
+      - POSTGRES_PASSWORD=$DATABASE_PASSWORD
+    expose:
+      - 5432
+    networks:
+      - shop-stock-action-history-db
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  shop-stock-action-history:
+    depends_on:
+      - postgresdb
+    image: shop-stock-action-history
+    restart: unless-stopped
+    env_file: ./.env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3500:3500
+    networks:
+      - shop-stock
+      - shop-stock-action-history-db
+    command: npm start
+
+volumes:
+  db:
+networks:
+  shop-stock:
+    name: shop-stock
+  shop-stock-action-history-db:
+    name: shop-stock-action-history-db
