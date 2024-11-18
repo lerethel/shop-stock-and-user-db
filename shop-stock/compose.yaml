@@ -1,0 +1,55 @@
+services:
+  postgresdb:
+    image: postgres:17.0-alpine
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_DB=$DATABASE_NAME
+      - POSTGRES_PASSWORD=$DATABASE_PASSWORD
+    expose:
+      - 5432
+    networks:
+      - shop-stock-db
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:4.0-management-alpine
+    restart: unless-stopped
+    hostname: rabbitmq
+    env_file: ./.env
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBITMQ_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBITMQ_PASSWORD
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitdb:/var/lib/rabbitmq
+    networks:
+      - shop-stock
+
+  shop-stock:
+    depends_on:
+      - postgresdb
+    image: shop-stock
+    restart: unless-stopped
+    env_file: ./.env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shop-stock
+      - shop-stock-db
+    command: npm run dev
+
+volumes:
+  db:
+  rabbitdb:
+networks:
+  shop-stock:
+    name: shop-stock
+  shop-stock-db:
+    name: shop-stock-db
