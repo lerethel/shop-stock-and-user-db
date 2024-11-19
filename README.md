@@ -9,6 +9,7 @@ This project includes methods to manage shop stocks. It is written in TypeScript
 1. Go to the project folder in your terminal (for example, using the `cd` command)
 2. Run `docker compose up`
 3. After the project has fully initialized, open a new terminal and navigate to the same folder. Run `docker ps` and note the name of the app container (typically `shop-stock-shop-stock-1`). Then, run `docker exec shop-stock-shop-stock-1 npm run db:setup` (use the correct container name) to create tables in the database
+4. The app will be available at `http://localhost:3000`
 
 ## Endpoints
 
@@ -54,6 +55,7 @@ This project stores reports about all actions performed in the `shop-stock` serv
 
 1. Go to the project folder in your terminal (for example, using the `cd` command)
 2. Run `docker compose up` to start the app
+3. The app will be available at `http://localhost:3500`
 
 ## Endpoints
 
@@ -77,6 +79,7 @@ This project includes a database of users who have some kind of problem. The app
 2. Run `docker compose up`
 3. After the project has fully initialized, open a new terminal and navigate to the same folder. Run `docker ps` and note the name of the app container (typically `user-db-user-db-1`). Then, run `docker exec user-db-user-db-1 npm run db:setup` (use the correct container name) to create a table in the database
 4. In the same terminal, run `docker exec user-db-user-db-1 npm run db:seed` to populate the database with 100.000 random users. You can run the seeder multiple times to create more users
+5. The app will be available at `http://localhost:3000`
 
 ## Endpoints
 
