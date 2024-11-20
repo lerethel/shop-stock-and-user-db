@@ -3,6 +3,7 @@ import db from "../db.js";
 if (!(await db.schema.hasTable("product"))) {
   await db.schema.createTable("product", (table) => {
     table.increments("id").primary();
+    table.integer("original_id").notNullable();
     table.integer("plu").notNullable();
     table.string("name").notNullable();
   });
@@ -13,6 +14,7 @@ if (!(await db.schema.hasTable("product"))) {
 if (!(await db.schema.hasTable("stock"))) {
   await db.schema.createTable("stock", (table) => {
     table.increments("id").primary();
+    table.integer("original_id").notNullable();
     table.integer("product_id").references("product.id").notNullable();
     table.integer("items_available").notNullable();
     table.integer("items_ordered").notNullable();
